@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html>
+    
+    <head>
+        
+        <meta charset="utf-8">
+        <title>Level Generator</title>
+        
+        <style>
+            
+            canvas {
+                border: dotted 1px black;
+            }
+            
+        </style>
+        
+    </head>
+    
+    <body>
+        
+        <canvas id="ctx"></canvas>
+        
+        <script>
+            
+            var characters = [
+                [".", 0, 0, 0],
+                [" ", 255, 255, 255],
+                [";", 128, 128, 128],
+                ["P", 127, 0, 0],
+                ["p", 178, 0, 255],
+                ["l", 255, 0, 0],
+                ["b", 64, 64, 64],
+                ["^", 127, 51, 0],
+                ["s", 255, 106, 0],
+                ["_", 0, 255, 255],
+                ["e", 255, 216, 0],
+                ["c", 127, 106, 0],
+                [":", 160, 160, 160],
+                ["S", 0, 38, 255],
+                ["F", 76, 255, 0],
+                ["Q", 127, 0, 55]
+            ];
+            
+            var img = new Image();
+            
+            img.src = "/levels/level.png"
+
+            var canvas = document.getElementById("ctx");
+            var ctx = canvas.getContext("2d");
+            
+            img.onload = function() {
+                canvas.width = img.width;
+                canvas.height = img.height;
+                ctx.drawImage(img, 0, 0, img.width, img.height);
+                var asciiLevel = "";
+                asciiLevel += "[\n\t\"";
+                for (var i = 0 ; i < canvas.height ; i++) {
+                    for (var t = 0 ; t < canvas.width ; t++) {
+                        for (var j in characters) {
+                            if (ctx.getImageData(t, i, 1, 1).data[0] === characters[j][1] && ctx.getImageData(t, i, 1, 1).data[1] === characters[j][2] && ctx.getImageData(t, i, 1, 1).data[2] === characters[j][3]) {
+                                asciiLevel+=characters[j][0];
+                            }
+                        }
+                    }
+                    if (i === canvas.height-1) {
+                        asciiLevel+="\"\n]";
+                    } else {
+                        asciiLevel+="\",\n\t\"";
+                    }
+                }
+                console.log(asciiLevel);
+            }
+            
+        </script>
+        
+    </body>
+    
+</html>
